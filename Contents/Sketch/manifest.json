@@ -1,0 +1,39 @@
+{
+    "name" : "Snip Snap Selection",
+    "identifier" : "com.wescraig.sketch.snipsnap",
+    "version" : "1.0",
+    "description" : "Quickly expand and shrink your artboards with ease!",
+    "author" : "Wes Craig",
+    "commands" : [
+    {
+      "name" : "Snip",
+      "identifier" : "snipSelection",
+      "shortcut" : "command control -",
+      "script" : "main.js",
+      "handler" : "snip"
+    },
+    {
+      "name" : "Snap",
+      "identifier" : "snapSelection",
+      "shortcut" : "command control =",
+      "script" : "main.js",
+      "handler" : "snap"
+    },
+    {
+      "name" : "Settings",
+      "identifier" : "snipsnapsettings",
+      "script" : "main.js",
+      "shortcut" : "command control 0",
+      "handler" : "showSettings"
+    }
+  ],
+  "menu": {
+    "title" : "Snip Snap!",
+    "items": [
+      "snipSelection",
+      "snapSelection",
+      "snipsnapsettings"
+    ]
+  }
+
+  }
