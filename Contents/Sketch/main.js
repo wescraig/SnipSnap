@@ -10,6 +10,11 @@ var snip = function(context){
 
 	var artboardHeight, toY, lastLayerDeltaY, layerBottomY, testDict
 
+	if(context.selection.length == 0){
+		nothingSelected()
+		return 
+	}
+
 	for(var i = 0; i < selection.length; i++){
 		
 		if(context.selection[0].isKindOfClass(MSArtboardGroup)){
@@ -49,7 +54,11 @@ var snip = function(context){
 
 var snap = function(context){
 
-
+	if(context.selection.length == 0){
+		nothingSelected()
+		return 
+	}
+	
 	for(var i = 0; i < context.selection.length; i++){
 
 		var artboardHeight = context.selection[i].frame().height()
@@ -163,6 +172,18 @@ var viewSetup = function(view, fields, labels){
 	}
 
 	return view
+}
+
+function nothingSelected(){
+	var alert = NSAlert.alloc().init()	
+	alert.setMessageText("Nothing is selected")
+	alert.setInformativeText("Please select artboards or layers to resize!")
+	alert.addButtonWithTitle("Okay!")
+	alert.addButtonWithTitle("Close")
+	var view = NSView.alloc().initWithFrame(NSMakeRect(0,0,300,100))
+
+	[alert runModal]
+
 }
 
 var showSettings = function(context) {
