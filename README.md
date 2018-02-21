@@ -1,7 +1,9 @@
-# SnipSnap
-Sketch plugin for easily setting artboard and layer bottom padding properties.
-![](http://i.imgur.com/OUkLi.gif)
+# SnipSnap!
+Sometimes designing for indecisive clients feels like:
+![](https://tenor.com/view/michael-scott-vasectomy-snipsnap-gif-8754405)
 
-![](http://i.imgur.com/Ssfp7.gif)
+As a designer, one of the most annoying struggles is adding to artboards or layers, then removing additional bottom padding again to fit your style guide.
 
-![](http://i.imgur.com/60bts.gif)
+Now you can easily do this with SnipSnap!
+
+Simple use the following 3 keyboard shortcuts to adjust your artboards or layers:
