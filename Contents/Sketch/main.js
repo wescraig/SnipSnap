@@ -199,8 +199,6 @@ var showSettings = function(context) {
     var snipDescriptionLabel = NSTextField.alloc().initWithFrame(NSMakeRect(0, viewHeight - (marginOffsetAnchor + 224), 300, 100))
     snipDescriptionLabel.setStringValue("This will be the number of pixels remaining at the bottom of your selection. The rest will be Snipped.")
 
-    //snapDefaultLabel, snipDefaultLabel, 
-
     labels.push(snapDefaultLabel, snapDescriptionLabel, snipDefaultLabel, snipDescriptionLabel)
 
     labels = adjustLabelSettings(labels);
@@ -211,7 +209,7 @@ var showSettings = function(context) {
 
     var snapField = NSTextField.alloc().initWithFrame(NSMakeRect(0, viewHeight - (marginOffsetAnchor + 24), 100, 20))
     snapField.setStringValue(userDefaultsDict["snap"] !=  null? userDefaultsDict["snap"] : "100")
-    // prefixField.setStringValue(userDefaultsDict["prefix"] !=  null? userDefaultsDict["prefix"] : "")
+    
 
 
     var snipField = NSTextField.alloc().initWithFrame(NSMakeRect(0, viewHeight - (marginOffsetAnchor + 120), 100, 20))
@@ -234,24 +232,11 @@ var showSettings = function(context) {
     	return
     }
 
-    // var userDefaults = NSUserDefaults.alloc().initWithSuiteName("com.wescraig.sketch.artboardsequence")
-    // [userDefaults setObject:prefixField.stringValue() forKey:"prefix"]
-    // userDefaults.synchronize()	
-
-
-    // if(alert.runModal() != 1001){
-    // 	setValuesToMemory(nameField, sequenceField, sequenceCheckBx, sequenceEndField, needSequence)
-    // }else{ 	
-    // 	return
-    // }
-
 
 
 }
 
 function setValuesToMemory(snipDefault, snapDefault){
-	
-	// var userDefaults = NSUserDefaults.alloc().initWithSuiteName("com.wescraig.sketch.artboardsequence")
 
 	[userDefaults setObject:snipDefault.stringValue() forKey:"snip"]
 	[userDefaults setObject:snapDefault.stringValue() forKey:"snap"]
@@ -259,82 +244,3 @@ function setValuesToMemory(snipDefault, snapDefault){
 	userDefaults.synchronize()
 
 }
-
-// Old Snip Function (no loop)//
-// var snip = function(context){
-
-// 	var sketch = context.api()
-// 	var selection = sketch.selectedDocument.selectedLayers
-	
-// 	var artboardHeight = context.selection[0].frame().height()
-// 	var toY = prepSnipValues(layerDictionary(selection))
-
-// 	context.selection[0].frame().height = toY
-
-// 	context.document.showMessage("Snip! Removed " + (artboardHeight - toY) + " pixels. " + (userDefaultsDict["snip"] !=  null? userDefaultsDict["snip"] : "32") + " pixels remaining.")
-
-
-// };
-
-// Snip Function Loop Working //
-// var snip = function(context){
-
-// 	var sketch = context.api()
-// 	var selection = sketch.selectedDocument.selectedLayers
-
-
-// 	for(var i = 0; i < selection.length; i++){
-// 		var artboardHeight = context.selection[i].frame().height()
-
-// 		var toY = prepSnipValues(layerDictionary(selection))
-
-// 		context.selection[i].frame().height = toY
-// 	}
-
-// 	context.document.showMessage("Snip! Artboard bottom padding is now " + (userDefaultsDict["snip"] !=  null? userDefaultsDict["snip"] : "32") + " pixels.")
-
-
-// };
-
-
-// Snip Loop Working //
-// var snip = function(context){
-
-// 	var sketch = context.api()
-// 	var selection = sketch.selectedDocument.selectedLayers
-
-
-// 	for(var i = 0; i < selection.length; i++){
-// 		var artboardHeight = context.selection[i].frame().height()
-
-// 		var toY = prepSnipValues(layerDictionary(selection))
-
-// 		context.selection[i].frame().height = toY
-// 	}
-
-// 	context.document.showMessage("Snip! Artboard bottom padding is now " + (userDefaultsDict["snip"] !=  null? userDefaultsDict["snip"] : "32") + " pixels.")
-
-
-// };
-
-
-	//log(context.selection[0].className())	// line and layers == MSShapeGroup //
-	//log(context.selection[0].parentArtboard()) //finds parent artboard!! //
-	//log(context.selection[0].isKindOfClass(MSArtboardGroup))
-
-// Old Snap Function (no loop)
-// var snap = function(context){
-
-// 	var sketch = context.api()
-// 	var selection = sketch.selectedDocument.selectedLayers
-
-// 	var artboardHeight = context.selection[0].frame().height()
-
-// 	var increaseY = parseInt(userDefaultsDict["snap"] !=  null? userDefaultsDict["snap"] : 100)
-
-// 	context.selection[0].frame().height = artboardHeight + increaseY
-
-// 	context.document.showMessage("Snap! Added " + increaseY + " pixels.")
-
-
-// };
