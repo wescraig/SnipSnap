@@ -1,9 +1,9 @@
 # SnipSnap!
-Designing for indecisive clients feels like:
+Designing in Sketch is blissful, but when you have an indecisive client or product owner, it feels like a lot of...
 
 <img src="https://media.giphy.com/media/hdra3g4bm6fAY/giphy.gif" width="300">
 
-As a designer, one of the most annoying struggles is adding to artboards or layers, then removing additional bottom padding again to fit your style guide.
+One of the most annoying struggles is expanding artboards or layers to add content, then removing extra bottom padding to fit your style guide.
 
 Now you can easily do this with SnipSnap!
 
