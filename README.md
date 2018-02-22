@@ -1,5 +1,5 @@
 # SnipSnap!
-Designing in Sketch is blissful, but when you have an indecisive client or product owner, it feels like a lot of...
+Designing in Sketch is blissful, but when you have an indecisive client or product owner, sometimes it feels like...
 
 <img src="https://media.giphy.com/media/hdra3g4bm6fAY/giphy.gif" width="300">
 
