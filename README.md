@@ -7,4 +7,4 @@ One of the most annoying struggles is expanding artboards or layers to add conte
 
 Now you can easily do this with SnipSnap!
 
-Simple use the following 3 keyboard shortcuts to adjust your artboards or layers:
+Simply use the following 3 keyboard shortcuts to adjust your artboards or layers:
