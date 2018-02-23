@@ -27,6 +27,7 @@ var snip = function(context){
 
 			artboardHeight = context.selection[i].frame().height()
 			toY = prepSnipValues(layerDictionary(selection))
+			log(toY)
 			context.selection[i].frame().height = toY		
 			context.document.showMessage("Snip! Artboard bottom padding is now " + (userDefaultsDict["snip"] !=  null? userDefaultsDict["snip"] : "32") + " pixels.")	
 		
@@ -90,9 +91,9 @@ var layerDictionaryNotArtBoard = function(selection){
 		selTopY = selection.frame().y()
 		selBottomY = selection.frame().y() + selection.frame().height()
 
-		log("Layer Top Y: "  + layerTopY + " Layer Bottom Y: " + layerBottomY)
-		log("Selection  Top Y: " + selTopY + " Selection Bottom Y: " + selBottomY)
-		log((layerTopY > selTopY) && (layerBottomY < selBottomY))
+		// log("Layer Top Y: "  + layerTopY + " Layer Bottom Y: " + layerBottomY)
+		// log("Selection  Top Y: " + selTopY + " Selection Bottom Y: " + selBottomY)
+		// log((layerTopY > selTopY) && (layerBottomY < selBottomY))
 
 		if((layerTopY > selTopY) && (layerBottomY < selBottomY)){
 			layerDict[layerBottomY] = parentArtArray[i].frame().height()
@@ -110,8 +111,6 @@ var layerDictionary = function(selection){
 	var layerDict = {}
 
 	selection.iterate(function(layer){
-		
-		log(layer)
 
 		layer.iterate(function(inner){
 
@@ -119,10 +118,12 @@ var layerDictionary = function(selection){
 			if(inner.sketchObject.className() == "MSSymbolInstance"){
 				layerDict[inner.sketchObject.frame().y() + inner.sketchObject.frame().height()] = inner.sketchObject.frame().height()
 			}else{
-				layerDict[inner.frame.y] = inner.frame.height
+				layerDict[inner.frame.y + inner.frame.height] = inner.frame.height
 			}
 		})
 	})
+
+	log(layerDict)
 
 	return layerDict
 
