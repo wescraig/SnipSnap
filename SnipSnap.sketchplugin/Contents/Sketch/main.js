@@ -3,6 +3,7 @@
 var userDefaults = NSUserDefaults.alloc().initWithSuiteName("com.wescraig.sketch.snipsnap");
 var userDefaultsDict = userDefaults.dictionaryRepresentation();
 
+
 var snip = function(context){
 
 	var sketch = context.api()
@@ -20,18 +21,55 @@ var snip = function(context){
 		if(context.selection[0].isKindOfClass(MSArtboardGroup)){
 			
 			testDict = layerDictionary(selection)
+
+			// log("Selection length: " + selection.length) //2
+			// log("Selection: " + JSON.stringify(selection))
+			// log("Selection: " + selection["_page"]["_document"]["_application"]["_object"]["selection"]) //two artboards
+			// Selection: _object,_page
+			// log("Context.Selection: " + context.selection[i]) //first artboard
+			// log("Context.Selection Layers: " + context.selection[i].layers()[0]) 
+	// 			Context.Selection Layers: (
+	//     "<MSRectangleShape: 0x7fcf1d428cb0> Rectangle (DDD9555D-755A-4420-93EC-A3C52B0D9859)",
+	//     "<MSRectangleShape: 0x7fcf1d4f5f80> Rectangle (5FC2DA66-9433-4050-B105-DB1062CA95E1)"
+	// )
+
+			// log(context.selection[i].name() + " | Layer Dictionary: " + Object.keys(testDict)) //layerDict has all selected layers in artboards
+			
 			if(Object.keys(testDict).length == 0){
 				context.document.showMessage("SnipSnap cannot set footer padding with an empty artboard! Please add layers or select a different artboard.")	
 				return
 			}
 
-			artboardHeight = context.selection[i].frame().height()
-			toY = prepSnipValues(layerDictionary(selection))
-			log(toY)
-			context.selection[i].frame().height = toY		
+
+			
+			var layers = context.selection[i].layers()
+			var layer_arr = []
+
+
+			for(var l = 0; l < layers.length; l++){
+				var layer = layers[l]
+				layer_arr.push(layer.frame().y() + layer.frame().height())
+			}
+
+
+			
+			var largest_layer = Math.max(...layer_arr)
+
+			
+			var new_bottom_padding = userDefaultsDict["snip"] !=  null? userDefaultsDict["snip"] : "32"
+			
+
+			// artboardHeight = context.selection[i].frame().height()
+			// toY = prepSnipValues(layerDictionary(selection))
+			// log(toY)
+			context.selection[i].frame().height = largest_layer + parseInt(new_bottom_padding)
 			context.document.showMessage("Snip! Artboard bottom padding is now " + (userDefaultsDict["snip"] !=  null? userDefaultsDict["snip"] : "32") + " pixels.")	
 		
 		}else{
+
+			// log("selection is not an artboard!!")
+			// log("selection:" + context.selection[0])
+
 			testDict = layerDictionaryNotArtBoard(context.selection[i])
 			if(Object.keys(testDict).length == 0){
 				context.document.showMessage("SnipSnap cannot set footer padding with an empty layer! Please add layers or select a different layer.")	
@@ -42,7 +80,63 @@ var snip = function(context){
 			toY = prepSnipValues(layerDictionaryNotArtBoard(context.selection[i]))
 			layerBottomY = context.selection[i].frame().height() + context.selection[i].frame().y()
 			lastLayerDeltaY = layerBottomY - toY
+
+			// log("context selection parent group index 0: " + context.selection[i].parentGroup())
+			// log("context selection parent group index 0: " + context.selection[i].parentGroup().isKindOfClass(MSArtboardGroup))
+			
 			context.selection[i].frame().height = artboardHeight - lastLayerDeltaY
+
+			//for future work on regrouping: 5/19/2019
+
+			// if(!context.selection[i].parentGroup().isKindOfClass(MSArtboardGroup)){
+			// 	// context.document.actionsController().actionForID("MSResizeGroupToFitAction").doPerformAction(nil);
+			// 	// context.selection[i].parentGroup().adjustToFit()
+				
+			// 	// context.selection[i].parentGroup().resizeToFitChildrenWithOption(0)
+
+			// 	// log("Group Height: " + context.selection[i].parentGroup().height())
+
+			// 	// var parent_group_layers = context.selection[i].parentGroup().layers()
+			// 	// context.selection[i].parentGroup().ungroup()
+			// 	// MSLayerGroup.groupFromLayers(MSLayerArray.arrayWithLayers(parent_group_layers));
+
+			// 	var selected_group = context.selection[i].parentGroup()
+			// 	var selected_layers = selected_group.layers()
+			// 	var selected_name = selected_group.name()
+
+			// 	context.selection[i].parentGroup().ungroup()
+
+			// 	context.document.actionsController().actionForID("MSGroupAction").doPerformAction(nil); 
+
+			// 	// log("group: " + context.selection[i].parentGroup().name())
+
+			// 	context.selection[i].parentGroup().name = selected_name
+			// 	context.selection[i].parentGroup().layers = selected_layers
+
+
+			// 	// new Group({
+			// 	//     name: selected_group.name(),
+			// 	//     layers: selected_group.layers(),
+			// 	//   })
+
+
+			// 	// var layers = context.selection[i].parentGroup().layers()
+			// 	// log("layers: " + layers)
+			// 	// context.selection[i].parentGroup().ungroup()
+
+			// 	// context.selection = layers				
+			// 	// context.document.actionsController().actionForID("MSGroupAction").doPerformAction(nil);
+
+			// 	// selected_group.select()
+			// 	// context.document.actionsController().actionForID("MSGroupAction").doPerformAction(nil);
+
+			// 	// context.selection[i].parentGroup().ungroup()
+
+			// 	// parent_of_selected.parentGroup().addLayer(group)
+				
+			// 	// context.document.actionsController().actionForID("MSGroupAction").doPerformAction(nil);
+			// 	// context.document.actionsController().actionForID("MSGroupAction").doPerformAction(nil);
+			// }
 
 			context.document.showMessage("Snip! Layer bottom padding is now " + (userDefaultsDict["snip"] !=  null? userDefaultsDict["snip"] : "32") + " pixels.")
 		
@@ -51,6 +145,19 @@ var snip = function(context){
 	}
 
 };
+
+// var calculateNewHeight = function(layers){
+// 	var padding = userDefaultsDict["snip"] !=  null? userDefaultsDict["snip"] : 32
+// 	var total_height = 0
+
+// 	for(var i = 0; i < layers.length; i++){
+// 		var layer = layers[i]
+// 		var layer_height = layer.frame().y()
+
+
+
+// 	}
+// };
 
 
 var snap = function(context){
@@ -78,7 +185,12 @@ var snap = function(context){
 var layerDictionaryNotArtBoard = function(selection){
 
 	var layerDict = {}
-	var parentArtArray = selection.parentArtboard().layers()
+
+	var parentArtArray = selection.parentGroup().layers()
+	// log("parentGroup: " + selection.parentGroup())
+	// log("parentGroup layers: " + selection.parentGroup().layers())
+
+
 	var layerTopY, layerBottomY, selTopY, selBottomY
 
 
@@ -114,16 +226,19 @@ var layerDictionary = function(selection){
 
 		layer.iterate(function(inner){
 
-
-			if(inner.sketchObject.className() == "MSSymbolInstance"){
-				layerDict[inner.sketchObject.frame().y() + inner.sketchObject.frame().height()] = inner.sketchObject.frame().height()
-			}else{
-				layerDict[inner.frame.y + inner.frame.height] = inner.frame.height
-			}
+			
+				// if(inner.sketchObject.className() == "MSSymbolInstance"){
+					layerDict[inner.sketchObject.frame().y() + inner.sketchObject.frame().height()] = inner.sketchObject.frame().height()
+				// }else{
+					// log(inner.sketchObject.frame().y())
+					// layerDict[inner.frame.y + inner.frame.height] = inner.frame.height
+				// }
+			
+			
 		})
 	})
 
-	log(layerDict)
+	// log(layerDict)
 
 	return layerDict
 
